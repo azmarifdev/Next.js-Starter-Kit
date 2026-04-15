@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 
 import { AUTH_COOKIE_NAME, createSessionToken, createUser } from "@/lib/auth";
 
+// Register a new user and immediately sign them in.
 export async function POST(request: Request) {
   const body = (await request.json().catch(() => null)) as
     | { name?: string; email?: string; password?: string }

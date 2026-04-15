@@ -1,8 +1,8 @@
 # Next.js Minimal Starter Template
 
-A polished, beginner-friendly Next.js starter that stays simple while being practical for real-world projects.
+A polished, minimal, and demo-ready Next.js starter built for fast onboarding and clear architecture.
 
-## Quick Start
+## 🚀 Quick Start
 
 ```bash
 pnpm install
@@ -12,55 +12,60 @@ pnpm dev
 
 Open: http://localhost:3000
 
-## Demo Credentials
+## 🔐 Demo Credentials
 
-- `admin@example.com` / `admin123`
-- `user@example.com` / `user123`
+- Email: `admin@example.com`
+- Password: `admin123`
 
-## Features
+- Email: `user@example.com`
+- Password: `user123`
 
-- Clean Next.js App Router structure
-- Auth API only (`login`, `register`, `logout`, `me`)
-- Optional MongoDB auth-user storage
-- Lightweight demo UX banner with default credentials
-- Marketing landing page with CTA
-- Local demo modules for users, projects, and tasks
-- Flat and clear `lib/` utilities
+## 📦 Features
 
-## Folder Structure
+- Simple authentication flow (login, register, me, logout)
+- Protected dashboard experience
+- Modular UI features (`user`, `project`, `task`)
+- Clean App Router pages and auth API routes
+- Optional MongoDB integration for auth storage
+- Demo banner and sample credentials for instant testing
+
+## 🧠 Folder Structure
 
 ```text
 src/
-  app/
-    (marketing)/page.tsx
-    api/v1/auth/
-    dashboard/
-    login/
-    register/
-    users/
-    projects/
-    tasks/
-  components/common/
-    demo-banner.tsx
-  i18n/messages/
-    en.json
-  lib/
-    auth.ts
-    db.ts
-    env.ts
-    logger.ts
-  modules/
-    auth/
-    user/
-    project/
-    task/
-  services/
-    apiClient.ts
-  styles/
-    globals.css
+  app/        # routing, pages, and API routes
+  modules/    # feature UI and local feature logic
+  lib/        # core utilities (env, logger, db, auth)
+  services/   # shared client-side helpers
+```
+
+## 📸 Screenshots
+
+### Dashboard
+
+![Dashboard Screenshot](public/assets/dashboard-screenshot.png)
+
+### Login
+
+![Login Screenshot](public/assets/login-screenshot.png)
+
+## Public Assets
+
+- `public/assets/logo.png`
+- `public/assets/banner.png`
+
+These are used in the marketing page and can be reused in docs or social previews.
+
+## Useful Commands
+
+```bash
+pnpm setup   # create .env and .env.local from .env.example
+pnpm seed    # seed demo users + sample collections into MongoDB
+pnpm build   # production build check
 ```
 
 ## Notes
 
-- This template intentionally avoids GraphQL, PostgreSQL, feature flags, and multi-auth complexity.
-- Replace local demo data in modules with your own backend when needed.
+- Root route (`/`) redirects to `/dashboard` for direct product experience.
+- Marketing page is available at `/marketing`.
+- Intentionally avoids GraphQL, PostgreSQL, feature flags, and multi-auth complexity.

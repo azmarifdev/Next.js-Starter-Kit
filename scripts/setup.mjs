@@ -1,12 +1,20 @@
 import { copyFileSync, existsSync } from "node:fs";
 
-if (!existsSync(".env.local")) {
-  copyFileSync(".env.example", ".env.local");
-  console.log("Created .env.local from .env.example");
-} else {
-  console.log(".env.local already exists");
+function ensureFromExample(targetFile) {
+  if (existsSync(targetFile)) {
+    console.log(`${targetFile} already exists`);
+    return;
+  }
+
+  copyFileSync(".env.example", targetFile);
+  console.log(`Created ${targetFile} from .env.example`);
 }
 
-console.log("Setup complete.");
-console.log("1. Update .env.local if needed");
-console.log("2. Run: pnpm dev");
+ensureFromExample(".env");
+ensureFromExample(".env.local");
+
+console.log("\nSetup complete.");
+console.log("Next steps:");
+console.log("1. (Optional) Update .env.local values");
+console.log("2. (Optional) Run: pnpm seed");
+console.log("3. Start app: pnpm dev");

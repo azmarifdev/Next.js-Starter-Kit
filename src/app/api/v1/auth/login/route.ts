@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 
 import { AUTH_COOKIE_NAME, createSessionToken, findUserByEmail } from "@/lib/auth";
 
+// Log in an existing user and issue an auth cookie.
 export async function POST(request: Request) {
   const body = (await request.json().catch(() => null)) as
     | { email?: string; password?: string }
@@ -12,7 +13,10 @@ export async function POST(request: Request) {
   const password = body?.password?.trim();
 
   if (!email || !password) {
-    return NextResponse.json({ success: false, message: "Email and password are required" }, { status: 400 });
+    return NextResponse.json(
+      { success: false, message: "Email and password are required" },
+      { status: 400 }
+    );
   }
 
   const user = await findUserByEmail(email);

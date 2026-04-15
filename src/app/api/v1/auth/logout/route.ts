@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 
 import { AUTH_COOKIE_NAME } from "@/lib/auth";
 
+// Clear session cookie to log out current user.
 export async function POST() {
   const cookieStore = await cookies();
 

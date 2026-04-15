@@ -17,12 +17,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <header className="header">
           <div className="container row between">
-            <Link href="/" className="brand">
+            <Link href="/dashboard" className="brand">
               {env.appName}
             </Link>
             <nav className="row nav">
-              <Link href="/">Home</Link>
               <Link href="/dashboard">Dashboard</Link>
+              <Link href="/marketing">Marketing</Link>
               <Link href="/users">Users</Link>
               <Link href="/projects">Projects</Link>
               <Link href="/tasks">Tasks</Link>

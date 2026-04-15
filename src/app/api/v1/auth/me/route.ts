@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { getSessionUser } from "@/lib/auth";
 
+// Return current authenticated user from session cookie.
 export async function GET() {
   const user = await getSessionUser();
 

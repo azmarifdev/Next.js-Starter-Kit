@@ -12,9 +12,14 @@ const client = new MongoClient(uri);
 await client.connect();
 
 const db = client.db(dbName);
-const users = db.collection("auth_users");
+const authUsers = db.collection("auth_users");
+const users = db.collection("users");
+const projects = db.collection("projects");
+const tasks = db.collection("tasks");
 
-await users.updateOne(
+const now = new Date();
+
+await authUsers.updateOne(
   { email: "admin@example.com" },
   {
     $setOnInsert: {
@@ -22,13 +27,14 @@ await users.updateOne(
       name: "Admin User",
       email: "admin@example.com",
       password: "admin123",
-      role: "admin"
+      role: "admin",
+      createdAt: now
     }
   },
   { upsert: true }
 );
 
-await users.updateOne(
+await authUsers.updateOne(
   { email: "user@example.com" },
   {
     $setOnInsert: {
@@ -36,7 +42,49 @@ await users.updateOne(
       name: "Regular User",
       email: "user@example.com",
       password: "user123",
-      role: "user"
+      role: "user",
+      createdAt: now
+    }
+  },
+  { upsert: true }
+);
+
+await users.updateOne(
+  { id: "u_admin" },
+  { $setOnInsert: { id: "u_admin", name: "Admin User", role: "admin", createdAt: now } },
+  { upsert: true }
+);
+
+await users.updateOne(
+  { id: "u_user" },
+  { $setOnInsert: { id: "u_user", name: "Regular User", role: "user", createdAt: now } },
+  { upsert: true }
+);
+
+await projects.updateOne(
+  { id: "p_starter" },
+  {
+    $setOnInsert: {
+      id: "p_starter",
+      name: "Starter Website",
+      owner: "Admin User",
+      status: "active",
+      createdAt: now
+    }
+  },
+  { upsert: true }
+);
+
+await tasks.updateOne(
+  { id: "t_setup" },
+  {
+    $setOnInsert: {
+      id: "t_setup",
+      title: "Set up project",
+      assignee: "Admin User",
+      priority: "high",
+      status: "done",
+      createdAt: now
     }
   },
   { upsert: true }
@@ -44,4 +92,6 @@ await users.updateOne(
 
 await client.close();
 
-console.log("Seed complete: auth_users demo credentials inserted.");
+console.log("Seed complete.");
+console.log("Auth users: admin@example.com/admin123, user@example.com/user123");
+console.log("Sample collections: users, projects, tasks");

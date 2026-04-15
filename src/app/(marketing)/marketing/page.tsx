@@ -14,7 +14,7 @@ export default function MarketingPage() {
       <div className="hero-card stack">
         <div className="row between">
           <Image src="/assets/logo.png" alt="Template Logo" width={64} height={64} />
-          <span className="muted">Minimal Starter</span>
+          <span className="muted">{marketing.projectName}</span>
         </div>
 
         <h1>{marketing.title}</h1>
@@ -40,7 +40,7 @@ export default function MarketingPage() {
       </div>
 
       <div className="card">
-        <h2>Features</h2>
+        <h2>{marketing.featuresTitle}</h2>
         <ul className="list">
           {marketing.features.map((feature) => (
             <li key={feature}>{feature}</li>

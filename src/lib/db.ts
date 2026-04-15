@@ -7,6 +7,7 @@ const globalState = globalThis as unknown as {
   mongoDb?: Db;
 };
 
+// Reuse a single MongoDB connection across requests in development.
 export async function getDb(): Promise<Db | null> {
   if (!env.mongodbUri) {
     return null;

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { DemoBanner } from "@/components/common/demo-banner";
 import { getSessionUser } from "@/lib/auth";
 
 export default async function DashboardPage() {
@@ -12,6 +13,8 @@ export default async function DashboardPage() {
 
   return (
     <section className="stack">
+      <DemoBanner />
+
       <div className="card">
         <h1>Dashboard</h1>
         <p>Welcome, {session.name}.</p>
