@@ -1,38 +1,17 @@
-import { shouldUseSecureCookies } from "@/lib/auth/session/cookie-security";
-import { AUTH_COOKIE_NAME } from "@/lib/config/constants";
-import { requireSameOrigin } from "@/lib/security/request-origin";
-import { apiSuccess, resolveRequestId } from "@/lib/utils/api-response";
+import { cookies } from "next/headers";
 
-import { requireCustomAuthProvider, requireInternalBackend, withApiHandler } from "../route-utils";
+import { ok } from "@/lib/api";
+import { AUTH_COOKIE_NAME } from "@/lib/auth/session";
 
-async function logoutHandler(request: Request): Promise<Response> {
-  const requestId = resolveRequestId(request.headers);
-  const route = "/api/v1/auth/logout";
-  const backendError = requireInternalBackend({ requestId, route });
-  if (backendError) {
-    return backendError;
-  }
-  const providerError = requireCustomAuthProvider({ requestId, route });
-  if (providerError) {
-    return providerError;
-  }
-
-  const originError = requireSameOrigin(request, { requestId, route });
-  if (originError) {
-    return originError;
-  }
-
-  const response = apiSuccess({ cleared: true }, { requestId });
-
-  response.cookies.set(AUTH_COOKIE_NAME, "", {
+export async function POST() {
+  const cookieStore = await cookies();
+  cookieStore.set(AUTH_COOKIE_NAME, "", {
     httpOnly: true,
-    secure: shouldUseSecureCookies(),
-    sameSite: "strict",
-    expires: new Date(0),
-    path: "/"
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    expires: new Date(0)
   });
 
-  return response;
+  return ok({ loggedOut: true });
 }
-
-export const POST = withApiHandler("/api/v1/auth/logout", logoutHandler);

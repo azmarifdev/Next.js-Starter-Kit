@@ -1,30 +1,29 @@
 import { Db, MongoClient } from "mongodb";
 
-import { env } from "@/lib/config/env";
+import { env } from "@/lib/env";
 
 const globalState = globalThis as unknown as {
-  __mongoClient?: MongoClient;
-  __mongoDb?: Db;
+  mongoClient?: MongoClient;
+  mongoDb?: Db;
 };
 
 export async function getMongoDb(): Promise<Db | null> {
-  if (!env.MONGODB_URI || !env.MONGODB_DB_NAME) {
+  if (!env.mongodbUri) {
     return null;
   }
 
-  if (globalState.__mongoDb) {
-    return globalState.__mongoDb;
+  if (globalState.mongoDb) {
+    return globalState.mongoDb;
   }
 
-  const client = globalState.__mongoClient ?? new MongoClient(env.MONGODB_URI);
+  const client = globalState.mongoClient || new MongoClient(env.mongodbUri);
 
-  if (!globalState.__mongoClient) {
+  if (!globalState.mongoClient) {
     await client.connect();
-    globalState.__mongoClient = client;
+    globalState.mongoClient = client;
   }
 
-  const database = client.db(env.MONGODB_DB_NAME);
-  globalState.__mongoDb = database;
-
-  return database;
+  const db = client.db(env.mongodbDbName);
+  globalState.mongoDb = db;
+  return db;
 }

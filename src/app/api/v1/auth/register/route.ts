@@ -1,191 +1,43 @@
-import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
-import {
-  AuthEmailExistsError,
-  createAuthUser,
-  findAuthUserByEmail,
-  isAuthDatabaseConfigured
-} from "@/lib/auth/repository/auth-user.repository";
-import { shouldUseSecureCookies } from "@/lib/auth/session/cookie-security";
-import { hashPassword } from "@/lib/auth/session/password";
-import { createSessionToken } from "@/lib/auth/session/session";
-import { appConfig } from "@/lib/config/app-config";
-import { AUTH_COOKIE_NAME, AUTH_SESSION_TTL_SECONDS } from "@/lib/config/constants";
-import { setRequestIdHeader } from "@/lib/observability/request-id";
-import { withTrace } from "@/lib/observability/tracing";
-import { getSafeRedirectPath } from "@/lib/security/redirect";
-import { requireSameOrigin } from "@/lib/security/request-origin";
-import { apiError, apiSuccess, resolveRequestId } from "@/lib/utils/api-response";
-import { registerSchema } from "@/modules/auth/auth.validation";
+import { fail, ok } from "@/lib/api";
+import { AUTH_COOKIE_NAME, createSessionToken } from "@/lib/auth/session";
+import { createAuthUser } from "@/lib/auth/users";
 
-import { requireCustomAuthProvider, requireInternalBackend, withApiHandler } from "../route-utils";
+export async function POST(request: Request) {
+  const body = (await request.json().catch(() => null)) as
+    | { name?: string; email?: string; password?: string }
+    | null;
 
-function prefersHtmlResponse(request: NextRequest): boolean {
-  const accept = request.headers.get("accept") ?? "";
-  return accept.includes("text/html");
-}
+  const name = body?.name?.trim();
+  const email = body?.email?.trim().toLowerCase();
+  const password = body?.password?.trim();
 
-function buildRedirectUrl(request: NextRequest, path: string): URL {
-  const originHeader = request.headers.get("origin");
-  return new URL(path, originHeader ?? request.nextUrl.origin);
-}
-
-function redirectWithRequestId(
-  request: NextRequest,
-  path: string,
-  requestId: string
-): NextResponse {
-  const response = NextResponse.redirect(buildRedirectUrl(request, path), 303);
-  setRequestIdHeader(response, requestId);
-  return response;
-}
-
-async function parsePayload(request: NextRequest): Promise<unknown> {
-  const contentType = request.headers.get("content-type") ?? "";
-  if (contentType.includes("application/json")) {
-    return request.json().catch(() => null);
+  if (!name || !email || !password) {
+    return fail("Name, email, and password are required", 400);
   }
 
-  if (
-    contentType.includes("application/x-www-form-urlencoded") ||
-    contentType.includes("multipart/form-data")
-  ) {
-    const formData = await request.formData().catch(() => null);
-    if (!formData) {
-      return null;
-    }
+  try {
+    const created = await createAuthUser({ name, email, password });
 
-    return {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      password: formData.get("password")
-    };
+    const token = createSessionToken({
+      id: created.id,
+      name: created.name,
+      email: created.email,
+      role: created.role
+    });
+
+    const cookieStore = await cookies();
+    cookieStore.set(AUTH_COOKIE_NAME, token, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      maxAge: 60 * 60 * 24
+    });
+
+    return ok({ id: created.id, name: created.name, email: created.email, role: created.role }, 201);
+  } catch (error) {
+    return fail(error instanceof Error ? error.message : "Registration failed", 409);
   }
-
-  return request.json().catch(() => null);
 }
-
-function getRegistrationUnavailableMessage(): string {
-  if (appConfig.dbProvider === "mongo") {
-    return "Registration is unavailable. Configure MONGODB_URI and MONGODB_DB_NAME first.";
-  }
-
-  return "Registration is unavailable. Configure DATABASE_URL first.";
-}
-
-async function registerHandler(request: NextRequest): Promise<Response> {
-  const requestId = resolveRequestId(request.headers);
-  const route = "/api/v1/auth/register";
-  const backendError = requireInternalBackend({ requestId, route });
-  if (backendError) {
-    return backendError;
-  }
-  const providerError = requireCustomAuthProvider({ requestId, route });
-  if (providerError) {
-    return providerError;
-  }
-  const wantsHtml = prefersHtmlResponse(request);
-  const successRedirectPath = getSafeRedirectPath(request.nextUrl.searchParams.get("redirect"));
-
-  const originError = requireSameOrigin(request, { requestId, route });
-  if (originError) {
-    return originError;
-  }
-
-  return withTrace(
-    "auth.register",
-    async () => {
-      if (!isAuthDatabaseConfigured()) {
-        if (wantsHtml) {
-          return redirectWithRequestId(request, "/register?error=service_unavailable", requestId);
-        }
-
-        return apiError(
-          {
-            code: "AUTH_UNAVAILABLE",
-            message: getRegistrationUnavailableMessage()
-          },
-          { status: 503, requestId, route }
-        );
-      }
-
-      const payload = await parsePayload(request);
-      const parsed = registerSchema.safeParse(payload);
-
-      if (!parsed.success) {
-        if (wantsHtml) {
-          return redirectWithRequestId(request, "/register?error=invalid_format", requestId);
-        }
-
-        return apiError(
-          { code: "VALIDATION_ERROR", message: "Invalid registration data" },
-          { status: 400, requestId, route }
-        );
-      }
-
-      const existingUser = await findAuthUserByEmail(parsed.data.email.toLowerCase());
-      if (existingUser) {
-        if (wantsHtml) {
-          return redirectWithRequestId(request, "/register?error=email_exists", requestId);
-        }
-
-        return apiError(
-          { code: "EMAIL_EXISTS", message: "Email already exists" },
-          { status: 409, requestId, route }
-        );
-      }
-
-      const passwordHash = await hashPassword(parsed.data.password);
-      let createdUser;
-      try {
-        createdUser = await createAuthUser({
-          name: parsed.data.name,
-          email: parsed.data.email,
-          passwordHash,
-          role: "user"
-        });
-      } catch (error) {
-        if (error instanceof AuthEmailExistsError) {
-          if (wantsHtml) {
-            return redirectWithRequestId(request, "/register?error=email_exists", requestId);
-          }
-
-          return apiError(
-            { code: "EMAIL_EXISTS", message: "Email already exists" },
-            { status: 409, requestId, route }
-          );
-        }
-
-        throw error;
-      }
-
-      const user = {
-        id: createdUser.id,
-        name: createdUser.name,
-        email: createdUser.email,
-        role: createdUser.role
-      };
-
-      const token = await createSessionToken(
-        { sub: user.id, name: user.name, email: user.email, role: user.role },
-        AUTH_SESSION_TTL_SECONDS
-      );
-      const response = wantsHtml
-        ? redirectWithRequestId(request, successRedirectPath, requestId)
-        : apiSuccess({ user }, { requestId });
-
-      response.cookies.set(AUTH_COOKIE_NAME, token, {
-        httpOnly: true,
-        secure: shouldUseSecureCookies(),
-        sameSite: "strict",
-        path: "/",
-        maxAge: AUTH_SESSION_TTL_SECONDS
-      });
-
-      return response;
-    },
-    { requestId, route }
-  );
-}
-
-export const POST = withApiHandler<NextRequest>("/api/v1/auth/register", registerHandler);
