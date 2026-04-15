@@ -10,5 +10,9 @@ export default async function ProjectsPage() {
     redirect("/login");
   }
 
-  return <ProjectList />;
+  return (
+    <section className="content-shell">
+      <ProjectList />
+    </section>
+  );
 }

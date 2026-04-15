@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 
 const uri = process.env.MONGODB_URI;
-const dbName = process.env.MONGODB_DB_NAME || "nextjs_starter_template";
+const dbName = process.env.MONGODB_DB_NAME || "nextjs_scalable_starter";
 
 if (!uri) {
   console.log("Skipped seed: MONGODB_URI is not set.");

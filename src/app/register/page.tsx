@@ -11,7 +11,7 @@ export default async function RegisterPage() {
   }
 
   return (
-    <section className="center stack narrow">
+    <section className="content-shell center stack narrow">
       <DemoBanner />
       <AuthForm mode="register" />
     </section>

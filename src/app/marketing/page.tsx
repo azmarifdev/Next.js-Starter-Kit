@@ -8,7 +8,7 @@ export default function MarketingPage() {
   const marketing = messages.marketing;
 
   return (
-    <section className="marketing stack">
+    <section className="content-shell marketing stack">
       <DemoBanner />
 
       <div className="hero-card stack">
@@ -22,7 +22,7 @@ export default function MarketingPage() {
 
         <Image
           src="/assets/banner.png"
-          alt="Next.js Minimal Starter banner"
+          alt="Next.js Starter Kit banner"
           width={1200}
           height={450}
           className="hero-image"

@@ -1,8 +1,8 @@
-# Next.js Minimal Starter Template
+# Next.js Starter Kit
 
 ![Starter Banner](public/assets/banner.png)
 
-**A modern, demo-ready Next.js starter for shipping dashboard-style products fast.**
+**A complete, production-like Next.js Starter Kit for launching real products in minutes.**
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
 ![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)
@@ -12,11 +12,11 @@
 
 ## Project Name
 
-**Next.js Minimal Starter Template**
+**Next.js Starter Kit**
 
 ## Tagline
 
-**Clean architecture, instant demo login, optional MongoDB persistence.**
+**Authentication, guarded routes, API error handling, polished UI states, and fast onboarding built in.**
 
 ## Quick Start
 
@@ -55,16 +55,17 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## Features
+## Why This Starter Kit Stands Out
 
-- Next.js App Router structure with clear route organization
-- Cookie-based auth flow (`login`, `register`, `me`, `logout`)
-- Protected dashboard route with session-aware UI
-- Modular feature slices: `auth`, `user`, `project`, `task`
-- Built-in demo mode with instant sign-in credentials
-- Optional MongoDB support with in-memory fallback
-- Seed script for auth users and sample collections
-- Lightweight i18n-ready message file structure (`src/i18n/messages`)
+- Complete auth flow with login/register/me/logout
+- Middleware route protection for `/dashboard`, `/users`, `/projects`, `/tasks`
+- Form validation + API error feedback for auth forms
+- Global loading, error, and not-found UI (`app/loading.tsx`, `app/error.tsx`, `app/not-found.tsx`)
+- Demo mode banner and seeded demo credentials
+- Theme toggle (light/dark) with saved preference
+- Toast notifications for login, logout, and CRUD interactions
+- Search, filter, stats, and empty states on users/projects/tasks pages
+- Optional MongoDB persistence with in-memory fallback
 
 ## Folder Structure
 
@@ -79,12 +80,12 @@ Open [http://localhost:3000](http://localhost:3000).
 ├── src/
 │   ├── app/                   # App Router pages + API routes
 │   │   └── api/v1/auth/       # Auth endpoints (login/register/me/logout)
-│   ├── components/common/     # Shared UI components
-│   ├── i18n/messages/         # Localization message files
-│   ├── lib/                   # Core runtime utilities (auth, env, db, logger)
+│   ├── components/common/     # Shared UI components (theme, toast, demo banner)
+│   ├── lib/                   # Core utilities (auth, env, db, api-error)
 │   ├── modules/               # Feature modules (auth, user, project, task, demo)
-│   ├── services/              # Shared service helpers (API client)
+│   ├── services/              # Shared service helpers (api client)
 │   └── styles/                # Global styles
+├── middleware.ts              # Route auth guard
 ├── .env.example
 ├── next.config.ts
 ├── package.json
@@ -127,10 +128,15 @@ pnpm seed     # Seed demo collections (requires MONGODB_URI)
 ## Environment Variables
 
 ```env
-NEXT_PUBLIC_APP_NAME=Next.js Minimal Starter
-MONGODB_URI=
-MONGODB_DB_NAME=nextjs_starter_template
+# App display name shown in navbar and metadata
+NEXT_PUBLIC_APP_NAME=Next.js Starter Kit
+
+# Required in production: use a long random value
 AUTH_SESSION_SECRET=dev-only-secret
+
+# Optional for persistent storage (leave empty to use in-memory demo mode)
+MONGODB_URI=
+MONGODB_DB_NAME=nextjs_starter_kit
 ```
 
 For production, use a strong `AUTH_SESSION_SECRET` and secure MongoDB credentials.

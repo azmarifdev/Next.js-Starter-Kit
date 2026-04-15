@@ -10,5 +10,9 @@ export default async function UsersPage() {
     redirect("/login");
   }
 
-  return <UserList />;
+  return (
+    <section className="content-shell">
+      <UserList />
+    </section>
+  );
 }

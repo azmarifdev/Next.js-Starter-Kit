@@ -1,14 +1,13 @@
-import { NextResponse } from "next/server";
-
 import { getSessionUser } from "@/lib/auth";
+import { apiError, apiSuccess } from "@/lib/api-error";
 
 // Return current authenticated user from session cookie.
 export async function GET() {
   const user = await getSessionUser();
 
   if (!user) {
-    return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
+    return apiError("Unauthorized", { status: 401, code: "UNAUTHORIZED" });
   }
 
-  return NextResponse.json({ success: true, data: user });
+  return apiSuccess(user);
 }

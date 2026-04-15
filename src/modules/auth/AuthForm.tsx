@@ -2,38 +2,85 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 
+import { useToast } from "@/components/common/toast";
 import { apiPost } from "@/services/apiClient";
 
 type AuthFormProps = {
   mode: "login" | "register";
+  redirectTo?: string;
 };
 
-export function AuthForm({ mode }: AuthFormProps) {
+type AuthErrors = {
+  name?: string;
+  email?: string;
+  password?: string;
+  form?: string;
+};
+
+function isValidEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+export function AuthForm({ mode, redirectTo = "/dashboard" }: AuthFormProps) {
   const router = useRouter();
+  const { showToast } = useToast();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState<AuthErrors>({});
   const [loading, setLoading] = useState(false);
+
+  const isRegister = useMemo(() => mode === "register", [mode]);
+
+  function validate(): AuthErrors {
+    const nextErrors: AuthErrors = {};
+
+    if (isRegister && name.trim().length < 2) {
+      nextErrors.name = "Name must be at least 2 characters";
+    }
+
+    if (!isValidEmail(email.trim())) {
+      nextErrors.email = "Please enter a valid email address";
+    }
+
+    if (password.trim().length < 6) {
+      nextErrors.password = "Password must be at least 6 characters";
+    }
+
+    return nextErrors;
+  }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setError("");
+    setErrors({});
+
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      showToast("Please fix form errors", "error");
+      return;
+    }
+
     setLoading(true);
 
     try {
       if (mode === "login") {
         await apiPost("/api/v1/auth/login", { email, password });
+        showToast("Login successful", "success");
       } else {
         await apiPost("/api/v1/auth/register", { name, email, password });
+        showToast("Registration successful", "success");
       }
 
-      router.push("/dashboard");
+      router.push(redirectTo);
       router.refresh();
     } catch (submitError) {
-      setError(submitError instanceof Error ? submitError.message : "Something went wrong");
+      const message = submitError instanceof Error ? submitError.message : "Something went wrong";
+      setErrors({ form: message });
+      showToast(message, "error");
     } finally {
       setLoading(false);
     }
@@ -41,16 +88,21 @@ export function AuthForm({ mode }: AuthFormProps) {
 
   return (
     <form onSubmit={onSubmit} className="card form">
-      <h1>{mode === "login" ? "Login" : "Register"}</h1>
-      {mode === "register" ? (
-        <input
-          className="input"
-          placeholder="Full name"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          required
-        />
+      <h1>{isRegister ? "Register" : "Login"}</h1>
+
+      {isRegister ? (
+        <>
+          <input
+            className="input"
+            placeholder="Full name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            required
+          />
+          {errors.name ? <p className="error">{errors.name}</p> : null}
+        </>
       ) : null}
+
       <input
         className="input"
         type="email"
@@ -59,6 +111,8 @@ export function AuthForm({ mode }: AuthFormProps) {
         onChange={(event) => setEmail(event.target.value)}
         required
       />
+      {errors.email ? <p className="error">{errors.email}</p> : null}
+
       <input
         className="input"
         type="password"
@@ -67,15 +121,17 @@ export function AuthForm({ mode }: AuthFormProps) {
         onChange={(event) => setPassword(event.target.value)}
         required
       />
-      {error ? <p className="error">{error}</p> : null}
+      {errors.password ? <p className="error">{errors.password}</p> : null}
+
+      {errors.form ? <p className="error">{errors.form}</p> : null}
+
       <button className="btn" disabled={loading} type="submit">
-        {loading ? "Please wait..." : mode === "login" ? "Login" : "Register"}
+        {loading ? "Please wait..." : isRegister ? "Create account" : "Login"}
       </button>
+
       <p>
-        {mode === "login" ? "Need an account?" : "Already have an account?"} {" "}
-        <Link href={mode === "login" ? "/register" : "/login"}>
-          {mode === "login" ? "Register" : "Login"}
-        </Link>
+        {isRegister ? "Already have an account?" : "Need an account?"} {" "}
+        <Link href={isRegister ? "/login" : "/register"}>{isRegister ? "Login" : "Register"}</Link>
       </p>
     </form>
   );

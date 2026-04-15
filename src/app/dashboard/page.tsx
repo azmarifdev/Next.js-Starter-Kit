@@ -13,14 +13,33 @@ export default async function DashboardPage() {
   }
 
   return (
-    <section className="stack">
+    <section className="content-shell stack">
       <DemoBanner />
 
-      <div className="card">
-        <h1>Dashboard</h1>
-        <p>Welcome, {session.name}.</p>
-        <p className="muted">Email: {session.email}</p>
-        <p className="muted">Role: {session.role}</p>
+      <div className="card stack">
+        <div>
+          <h1>Welcome back, {session.name}</h1>
+          <p className="muted">You are logged in and ready to start building.</p>
+        </div>
+
+        <div className="stats-grid">
+          <div className="stat-card">
+            <p className="muted">Role</p>
+            <strong>{session.role}</strong>
+          </div>
+          <div className="stat-card">
+            <p className="muted">Email</p>
+            <strong>{session.email}</strong>
+          </div>
+          <div className="stat-card">
+            <p className="muted">Projects</p>
+            <strong>{demoProjects.length}</strong>
+          </div>
+          <div className="stat-card">
+            <p className="muted">Tasks</p>
+            <strong>{demoTasks.length}</strong>
+          </div>
+        </div>
       </div>
 
       <div className="card">

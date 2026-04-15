@@ -1,26 +1,63 @@
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
 
 import { AUTH_COOKIE_NAME, createSessionToken, createUser } from "@/lib/auth";
+import { apiError, apiSuccess, handleApiError, isValidEmail, parseJsonBody } from "@/lib/api-error";
+
+type RegisterBody = {
+  name?: string;
+  email?: string;
+  password?: string;
+};
 
 // Register a new user and immediately sign them in.
 export async function POST(request: Request) {
-  const body = (await request.json().catch(() => null)) as
-    | { name?: string; email?: string; password?: string }
-    | null;
-
-  const name = body?.name?.trim();
-  const email = body?.email?.trim().toLowerCase();
-  const password = body?.password?.trim();
-
-  if (!name || !email || !password) {
-    return NextResponse.json(
-      { success: false, message: "Name, email, and password are required" },
-      { status: 400 }
-    );
-  }
-
   try {
+    const body = await parseJsonBody<RegisterBody>(request);
+
+    if (!body) {
+      return apiError("Invalid JSON payload", { status: 400, code: "INVALID_JSON" });
+    }
+
+    const name = body.name?.trim() ?? "";
+    const email = body.email?.trim().toLowerCase() ?? "";
+    const password = body.password?.trim() ?? "";
+
+    if (!name || !email || !password) {
+      return apiError("Name, email, and password are required", {
+        status: 400,
+        code: "VALIDATION_ERROR",
+        details: {
+          name: name ? "" : "Name is required",
+          email: email ? "" : "Email is required",
+          password: password ? "" : "Password is required"
+        }
+      });
+    }
+
+    if (name.length < 2) {
+      return apiError("Name must be at least 2 characters", {
+        status: 400,
+        code: "VALIDATION_ERROR",
+        details: { name: "Too short" }
+      });
+    }
+
+    if (!isValidEmail(email)) {
+      return apiError("Please provide a valid email address", {
+        status: 400,
+        code: "VALIDATION_ERROR",
+        details: { email: "Invalid email format" }
+      });
+    }
+
+    if (password.length < 6) {
+      return apiError("Password must be at least 6 characters", {
+        status: 400,
+        code: "VALIDATION_ERROR",
+        details: { password: "Too short" }
+      });
+    }
+
     const user = await createUser({ name, email, password });
 
     const token = createSessionToken({
@@ -39,17 +76,14 @@ export async function POST(request: Request) {
       maxAge: 60 * 60 * 24
     });
 
-    return NextResponse.json(
-      {
-        success: true,
-        data: { id: user.id, name: user.name, email: user.email, role: user.role }
-      },
-      { status: 201 }
-    );
+    return apiSuccess({ id: user.id, name: user.name, email: user.email, role: user.role }, 201);
   } catch (error) {
-    return NextResponse.json(
-      { success: false, message: error instanceof Error ? error.message : "Registration failed" },
-      { status: 409 }
-    );
+    const message = error instanceof Error ? error.message : "Registration failed";
+
+    if (message.toLowerCase().includes("already exists")) {
+      return apiError("Email already exists", { status: 409, code: "EMAIL_CONFLICT" });
+    }
+
+    return handleApiError(error);
   }
 }

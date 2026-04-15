@@ -10,5 +10,9 @@ export default async function TasksPage() {
     redirect("/login");
   }
 
-  return <TaskList />;
+  return (
+    <section className="content-shell">
+      <TaskList />
+    </section>
+  );
 }

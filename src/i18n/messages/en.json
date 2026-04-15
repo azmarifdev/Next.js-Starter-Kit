@@ -1,13 +1,13 @@
 {
   "marketing": {
-    "projectName": "Next.js Minimal Starter",
-    "title": "Ship Faster With A Clean Next.js Starter",
+    "projectName": "Next.js Starter Kit",
+    "title": "Ship Faster With A Complete Next.js Starter Kit",
     "subtitle": "Built for clarity, demo-ready out of the box, and simple enough for beginners to understand in minutes.",
     "ctaPrimary": "Go To Login",
     "ctaSecondary": "Go To Dashboard",
-    "featuresTitle": "Starter Features",
+    "featuresTitle": "Starter Kit Features",
     "features": [
-      "Minimal App Router structure",
+      "Clean App Router structure",
       "Auth API ready: login, register, logout, me",
       "Demo banner with default credentials",
       "Optional MongoDB support for auth users"

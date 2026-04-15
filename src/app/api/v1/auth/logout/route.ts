@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
 
 import { AUTH_COOKIE_NAME } from "@/lib/auth";
+import { apiSuccess } from "@/lib/api-error";
 
 // Clear session cookie to log out current user.
 export async function POST() {
@@ -15,5 +15,5 @@ export async function POST() {
     expires: new Date(0)
   });
 
-  return NextResponse.json({ success: true, data: { loggedOut: true } });
+  return apiSuccess({ loggedOut: true });
 }
