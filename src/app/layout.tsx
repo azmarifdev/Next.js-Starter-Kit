@@ -1,28 +1,35 @@
 import "@/styles/globals.css";
 
 import type { Metadata } from "next";
-import { NextIntlClientProvider } from "next-intl";
-import { getLocale, getMessages } from "next-intl/server";
-import type { ReactNode } from "react";
+import Link from "next/link";
+import { ReactNode } from "react";
 
 import { env } from "@/lib/env";
-import { AppProviders } from "@/providers";
 
-import { rootMetadata } from "../../config/root-metadata";
+export const metadata: Metadata = {
+  title: env.appName,
+  description: "Minimal Next.js starter template"
+};
 
-export const metadata: Metadata = rootMetadata;
-
-export default async function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
-  const locale = await getLocale();
-  const messages = await getMessages();
-
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <body data-site-url={env.NEXT_PUBLIC_SITE_URL}>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          {/* Keep global providers in one place to make onboarding easier. */}
-          <AppProviders>{children}</AppProviders>
-        </NextIntlClientProvider>
+    <html lang="en">
+      <body>
+        <header className="header">
+          <div className="container row between">
+            <Link href="/" className="brand">
+              {env.appName}
+            </Link>
+            <nav className="row nav">
+              <Link href="/dashboard">Dashboard</Link>
+              <Link href="/users">Users</Link>
+              <Link href="/projects">Projects</Link>
+              <Link href="/tasks">Tasks</Link>
+              <Link href="/login">Login</Link>
+            </nav>
+          </div>
+        </header>
+        <main className="container">{children}</main>
       </body>
     </html>
   );

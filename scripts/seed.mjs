@@ -1,36 +1,48 @@
-import { neon } from "@neondatabase/serverless";
+import { MongoClient } from "mongodb";
 
-const databaseUrl = process.env.DATABASE_URL;
-if (!databaseUrl) {
-  console.error("DATABASE_URL is required for db:seed");
-  process.exit(1);
+const uri = process.env.MONGODB_URI;
+const dbName = process.env.MONGODB_DB_NAME || "nextjs_starter_template";
+
+if (!uri) {
+  console.log("Skipped seed: MONGODB_URI is not set.");
+  process.exit(0);
 }
 
-const sql = neon(databaseUrl);
-const now = new Date().toISOString();
+const client = new MongoClient(uri);
+await client.connect();
 
-await sql`
-  INSERT INTO auth_users (id, name, email, role, password_hash, failed_login_attempts, created_at, updated_at)
-  VALUES
-    ('u_seed_admin', 'Template Admin', 'admin@example.com', 'admin', 'scrypt$DfixAOmN/HyToJDXVsnsMQ==$0KALoYelUP+hzauO8lv/iA91bmhy/uKfTGetxpSlP3XxklctbE1d9ni1A103qH/cBRItXtPU6Yc1ZsO+moVNTw==', 0, ${now}, ${now}),
-    ('u_seed_user', 'Template User', 'user@example.com', 'user', 'scrypt$DfixAOmN/HyToJDXVsnsMQ==$0KALoYelUP+hzauO8lv/iA91bmhy/uKfTGetxpSlP3XxklctbE1d9ni1A103qH/cBRItXtPU6Yc1ZsO+moVNTw==', 0, ${now}, ${now})
-  ON CONFLICT (id) DO UPDATE SET
-    name = EXCLUDED.name,
-    email = EXCLUDED.email,
-    role = EXCLUDED.role,
-    password_hash = EXCLUDED.password_hash,
-    updated_at = EXCLUDED.updated_at;
-`;
+const db = client.db(dbName);
+const collection = db.collection("auth_users");
 
-await sql`
-  INSERT INTO users (id, name, email, age, created_at)
-  VALUES
-    ('u_seed_admin', 'Template Admin', 'admin@example.com', 31, ${now}),
-    ('u_seed_user', 'Template User', 'user@example.com', 27, ${now})
-  ON CONFLICT (id) DO UPDATE SET
-    name = EXCLUDED.name,
-    email = EXCLUDED.email,
-    age = EXCLUDED.age;
-`;
+await collection.updateOne(
+  { email: "admin@example.com" },
+  {
+    $setOnInsert: {
+      id: "u_admin",
+      name: "Admin User",
+      email: "admin@example.com",
+      password: "admin123",
+      role: "admin"
+    }
+  },
+  { upsert: true }
+);
 
-console.info("Database seeded: admin@example.com and user@example.com");
+await collection.updateOne(
+  { email: "user@example.com" },
+  {
+    $setOnInsert: {
+      id: "u_user",
+      name: "Regular User",
+      email: "user@example.com",
+      password: "user123",
+      role: "user"
+    }
+  },
+  { upsert: true }
+);
+
+await client.close();
+
+console.log("Seed complete.");
+console.log("Users: admin@example.com / admin123, user@example.com / user123");

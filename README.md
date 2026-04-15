@@ -1,96 +1,46 @@
-# Next.js Hybrid Starter
+# Next.js Minimal Starter Template
 
-A clean, scalable, and beginner-friendly Next.js App Router starter template.
+A clean and beginner-friendly Next.js starter.
+
+## Features
+
+- Next.js App Router
+- Simple custom auth (login/register)
+- Simple REST API routes
+- Core modules only: auth, user, project, task
+- Optional MongoDB connection (simple setup)
 
 ## Quick Start
 
 ```bash
 pnpm install
-cp .env.example .env.local
+pnpm setup
 pnpm dev
 ```
 
-Open `http://localhost:3000`
+Open http://localhost:3000
 
-## Features
+## How To Run
 
-- Clean App Router structure with modular architecture
-- Marketing pages (`/` and `/about`) for demo-ready presentation
-- Lightweight i18n setup with English (`en`) and Bangla (`bn`)
-- Demo UI components (`DemoBanner`, `DemoBadge`)
-- Zod-based environment validation (`src/lib/env.ts`)
-- Lightweight logger wrapper (`src/lib/logger.ts`)
-- Simple MongoDB connection layer (`src/lib/db.ts`)
-- Minimal testing structure (`tests/unit`, `tests/e2e`)
+1. Copy env file:
 
-## Scripts
+```bash
+pnpm setup
+```
+
+2. Start development server:
 
 ```bash
 pnpm dev
-pnpm build
-pnpm start
-pnpm test
-pnpm test:e2e
-pnpm lint
-pnpm typecheck
 ```
 
-## Folder Structure
+3. Optional MongoDB seed:
 
 ```bash
-src/
-  app/
-    (marketing)/
-      page.tsx
-      about/page.tsx
-  components/
-    common/
-      demo-banner.tsx
-      demo-badge.tsx
-  i18n/
-    config.ts
-    messages/
-      en.json
-      bn.json
-  lib/
-    env.ts
-    logger.ts
-    db.ts
-tests/
-  unit/
-  e2e/
-public/
-  assets/
-    logo.png
-    banner.png
+MONGODB_URI="your-uri" pnpm seed
 ```
 
-## Demo Screenshots
+Default demo login (without MongoDB):
 
-Landing preview:
-
-![Landing](./public/assets/banner.png)
-
-Logo asset:
-
-![Logo](./public/assets/logo.png)
-
-## Environment
-
-Minimum required variable:
-
-```env
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-```
-
-Optional for database usage:
-
-```env
-MONGODB_URI=mongodb://127.0.0.1:27017/starter
-```
-
-## Developer Experience Notes
-
-- Keep feature code inside existing module boundaries.
-- Avoid adding advanced systems until needed.
-- Prefer small files with clear names and focused responsibilities.
+- `admin@example.com` / `admin123`
+- `user@example.com` / `user123`
