@@ -36,7 +36,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className="antialiased">
+      <body className="antialiased" suppressHydrationWarning>
         <ToastProvider>
           <header
             className="sticky top-0 z-50 border-b backdrop-blur-xl"
