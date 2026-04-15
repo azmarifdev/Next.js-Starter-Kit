@@ -8,7 +8,7 @@ import { env } from "@/lib/env";
 
 export const metadata: Metadata = {
   title: env.appName,
-  description: "Minimal Next.js starter template"
+  description: "Minimal, beginner-friendly Next.js starter"
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -21,6 +21,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               {env.appName}
             </Link>
             <nav className="row nav">
+              <Link href="/">Home</Link>
               <Link href="/dashboard">Dashboard</Link>
               <Link href="/users">Users</Link>
               <Link href="/projects">Projects</Link>

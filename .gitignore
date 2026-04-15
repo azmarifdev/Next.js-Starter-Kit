@@ -17,10 +17,6 @@
 /blob-report/
 /playwright/.cache/
 
-# storybook
-*storybook.log
-storybook-static
-
 # misc
 .DS_Store
 .idea
@@ -51,7 +47,5 @@ next-env.d.ts
 .eslintcache
 .swc
 
-# next-sitemap output
-robots.txt
-sitemap.xml
-sitemap-*.xml
+# git recovery temp
+.git-recovery/

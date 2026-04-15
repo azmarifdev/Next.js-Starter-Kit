@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { getSessionUser } from "@/lib/auth/session";
+import { getSessionUser } from "@/lib/auth";
 
 export default async function DashboardPage() {
   const session = await getSessionUser();
@@ -15,8 +15,8 @@ export default async function DashboardPage() {
       <div className="card">
         <h1>Dashboard</h1>
         <p>Welcome, {session.name}.</p>
-        <p>Email: {session.email}</p>
-        <p>Role: {session.role}</p>
+        <p className="muted">Email: {session.email}</p>
+        <p className="muted">Role: {session.role}</p>
       </div>
 
       <div className="row">

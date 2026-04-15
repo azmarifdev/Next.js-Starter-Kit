@@ -7,7 +7,7 @@ const globalState = globalThis as unknown as {
   mongoDb?: Db;
 };
 
-export async function getMongoDb(): Promise<Db | null> {
+export async function getDb(): Promise<Db | null> {
   if (!env.mongodbUri) {
     return null;
   }
@@ -16,7 +16,7 @@ export async function getMongoDb(): Promise<Db | null> {
     return globalState.mongoDb;
   }
 
-  const client = globalState.mongoClient || new MongoClient(env.mongodbUri);
+  const client = globalState.mongoClient ?? new MongoClient(env.mongodbUri);
 
   if (!globalState.mongoClient) {
     await client.connect();

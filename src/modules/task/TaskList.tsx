@@ -1,45 +1,47 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import type { Task } from "@/modules/task/types";
-import { apiGet, apiPatch } from "@/services/apiClient";
+
+const initialTasks: Task[] = [
+  {
+    id: "t1",
+    title: "Set up authentication",
+    assignee: "Admin User",
+    priority: "high",
+    status: "done"
+  },
+  {
+    id: "t2",
+    title: "Polish landing page",
+    assignee: "Regular User",
+    priority: "medium",
+    status: "in-progress"
+  }
+];
 
 export function TaskList() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [tasks, setTasks] = useState<Task[]>(initialTasks);
 
-  async function loadTasks() {
-    const data = await apiGet<Task[]>("/api/v1/tasks");
-    setTasks(data);
-  }
+  function onStatusChange(id: string, status: Task["status"]) {
+    setTasks((current) =>
+      current.map((task) => {
+        if (task.id !== id) {
+          return task;
+        }
 
-  useEffect(() => {
-    loadTasks()
-      .catch((requestError) => {
-        setError(requestError instanceof Error ? requestError.message : "Failed to load tasks");
+        return { ...task, status };
       })
-      .finally(() => setLoading(false));
-  }, []);
-
-  async function onStatusChange(id: string, status: Task["status"]) {
-    try {
-      await apiPatch(`/api/v1/tasks/${id}`, { status });
-      await loadTasks();
-    } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : "Failed to update task");
-    }
-  }
-
-  if (loading) {
-    return <p>Loading tasks...</p>;
+    );
   }
 
   return (
-    <div className="card">
-      <h2>Tasks</h2>
-      {error ? <p className="error">{error}</p> : null}
+    <div className="card stack">
+      <div>
+        <h2>Tasks</h2>
+        <p className="muted">Local demo tasks for quick onboarding.</p>
+      </div>
       <ul className="list">
         {tasks.map((task) => (
           <li key={task.id} className="row between">

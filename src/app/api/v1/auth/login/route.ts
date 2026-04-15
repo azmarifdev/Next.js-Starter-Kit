@@ -1,8 +1,7 @@
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
-import { fail, ok } from "@/lib/api";
-import { findAuthUserByEmail } from "@/lib/auth/users";
-import { AUTH_COOKIE_NAME, createSessionToken } from "@/lib/auth/session";
+import { AUTH_COOKIE_NAME, createSessionToken, findUserByEmail } from "@/lib/auth";
 
 export async function POST(request: Request) {
   const body = (await request.json().catch(() => null)) as
@@ -13,13 +12,13 @@ export async function POST(request: Request) {
   const password = body?.password?.trim();
 
   if (!email || !password) {
-    return fail("Email and password are required", 400);
+    return NextResponse.json({ success: false, message: "Email and password are required" }, { status: 400 });
   }
 
-  const user = await findAuthUserByEmail(email);
+  const user = await findUserByEmail(email);
 
   if (!user || user.password !== password) {
-    return fail("Invalid email or password", 401);
+    return NextResponse.json({ success: false, message: "Invalid email or password" }, { status: 401 });
   }
 
   const token = createSessionToken({
@@ -38,5 +37,8 @@ export async function POST(request: Request) {
     maxAge: 60 * 60 * 24
   });
 
-  return ok({ id: user.id, name: user.name, email: user.email, role: user.role });
+  return NextResponse.json({
+    success: true,
+    data: { id: user.id, name: user.name, email: user.email, role: user.role }
+  });
 }

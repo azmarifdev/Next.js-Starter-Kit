@@ -12,9 +12,9 @@ const client = new MongoClient(uri);
 await client.connect();
 
 const db = client.db(dbName);
-const collection = db.collection("auth_users");
+const users = db.collection("auth_users");
 
-await collection.updateOne(
+await users.updateOne(
   { email: "admin@example.com" },
   {
     $setOnInsert: {
@@ -28,7 +28,7 @@ await collection.updateOne(
   { upsert: true }
 );
 
-await collection.updateOne(
+await users.updateOne(
   { email: "user@example.com" },
   {
     $setOnInsert: {
@@ -44,5 +44,4 @@ await collection.updateOne(
 
 await client.close();
 
-console.log("Seed complete.");
-console.log("Users: admin@example.com / admin123, user@example.com / user123");
+console.log("Seed complete: auth_users demo credentials inserted.");

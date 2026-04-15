@@ -1,0 +1,14 @@
+{
+  "marketing": {
+    "title": "Launch Faster With A Clean Next.js Starter",
+    "subtitle": "Simple auth, clean routing, and clear module structure so beginners can start shipping in minutes.",
+    "ctaPrimary": "Start Now",
+    "ctaSecondary": "View Dashboard",
+    "features": [
+      "Minimal App Router structure",
+      "Auth API ready: login, register, logout, me",
+      "Demo-friendly UI modules for user, project, and task",
+      "Optional MongoDB support for auth users"
+    ]
+  }
+}

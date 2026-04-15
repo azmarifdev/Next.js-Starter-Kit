@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { getSessionUser } from "@/lib/auth/session";
+import { getSessionUser } from "@/lib/auth";
 import { TaskList } from "@/modules/task/TaskList";
 
 export default async function TasksPage() {

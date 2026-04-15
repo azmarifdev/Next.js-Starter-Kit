@@ -1,35 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
 import type { AppUser } from "@/modules/user/types";
-import { apiGet } from "@/services/apiClient";
+
+const demoUsers: AppUser[] = [
+  { id: "u_admin", name: "Admin User", email: "admin@example.com", role: "admin" },
+  { id: "u_user", name: "Regular User", email: "user@example.com", role: "user" }
+];
 
 export function UserList() {
-  const [users, setUsers] = useState<AppUser[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    apiGet<AppUser[]>("/api/v1/users")
-      .then(setUsers)
-      .catch((requestError) => {
-        setError(requestError instanceof Error ? requestError.message : "Failed to load users");
-      })
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading) {
-    return <p>Loading users...</p>;
-  }
-
-  if (error) {
-    return <p className="error">{error}</p>;
-  }
+  const users = useMemo(() => demoUsers, []);
 
   return (
     <div className="card">
       <h2>Users</h2>
+      <p className="muted">Starter-friendly sample data (replace with your backend later).</p>
       <ul className="list">
         {users.map((user) => (
           <li key={user.id}>
