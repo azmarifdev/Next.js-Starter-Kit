@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { useToast } from "@/components/common/toast";
+import { Button } from "@/components/ui/button";
 import { apiPost } from "@/services/apiClient";
 
 export function LogoutButton() {
@@ -27,8 +28,8 @@ export function LogoutButton() {
   }
 
   return (
-    <button type="button" className="btn secondary px-3.5 py-2 text-sm font-semibold" onClick={onLogout} disabled={loading}>
+    <Button type="button" variant="secondary" className="px-3.5 py-2 text-sm font-semibold" onClick={onLogout} disabled={loading}>
       {loading ? "Logging out..." : "Logout"}
-    </button>
+    </Button>
   );
 }

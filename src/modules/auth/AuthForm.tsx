@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useMemo, useState } from "react";
 
 import { useToast } from "@/components/common/toast";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { apiPost } from "@/services/apiClient";
 
 type AuthFormProps = {
@@ -87,52 +90,59 @@ export function AuthForm({ mode, redirectTo = "/dashboard" }: AuthFormProps) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="card form">
-      <h1>{isRegister ? "Register" : "Login"}</h1>
+    <Card className="form">
+      <form onSubmit={onSubmit} className="form">
+        <h1>{isRegister ? "Register" : "Login"}</h1>
 
-      {isRegister ? (
-        <>
-          <input
-            className="input"
-            placeholder="Full name"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            required
-          />
-          {errors.name ? <p className="error">{errors.name}</p> : null}
-        </>
-      ) : null}
+        {isRegister ? (
+          <>
+            <Input
+              name="name"
+              placeholder="Full name"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              error={errors.name}
+              required
+            />
+            {errors.name ? <p id="name-error" className="error">{errors.name}</p> : null}
+          </>
+        ) : null}
 
-      <input
-        className="input"
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-        required
-      />
-      {errors.email ? <p className="error">{errors.email}</p> : null}
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          error={errors.email}
+          required
+        />
+        {errors.email ? <p id="email-error" className="error">{errors.email}</p> : null}
 
-      <input
-        className="input"
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-        required
-      />
-      {errors.password ? <p className="error">{errors.password}</p> : null}
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          error={errors.password}
+          required
+        />
+        {errors.password ? <p id="password-error" className="error">{errors.password}</p> : null}
 
-      {errors.form ? <p className="error">{errors.form}</p> : null}
+        {errors.form ? <p className="error">{errors.form}</p> : null}
 
-      <button className="btn" disabled={loading} type="submit">
-        {loading ? "Please wait..." : isRegister ? "Create account" : "Login"}
-      </button>
+        <Button disabled={loading} type="submit">
+          {loading ? "Please wait..." : isRegister ? "Create account" : "Login"}
+        </Button>
 
-      <p>
-        {isRegister ? "Already have an account?" : "Need an account?"} {" "}
-        <Link href={isRegister ? "/login" : "/register"}>{isRegister ? "Login" : "Register"}</Link>
-      </p>
-    </form>
+        <p>
+          {isRegister ? "Already have an account?" : "Need an account?"} {" "}
+          <Link href={isRegister ? "/login" : "/register"}>{isRegister ? "Login" : "Register"}</Link>
+        </p>
+      </form>
+    </Card>
   );
 }

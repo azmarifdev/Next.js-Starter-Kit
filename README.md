@@ -69,6 +69,8 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Folder Structure
 
+This starter includes a lightweight UI layer in `src/components/ui/` (`button`, `input`, `card`, `modal`) and a simple toast system (`toast.tsx`, `toaster.tsx`).
+
 ```text
 .
 ├── public/
@@ -81,6 +83,7 @@ Open [http://localhost:3000](http://localhost:3000).
 │   ├── app/                   # App Router pages + API routes
 │   │   └── api/v1/auth/       # Auth endpoints (login/register/me/logout)
 │   ├── components/common/     # Shared UI components (theme, toast, demo banner)
+│   ├── components/ui/         # Lightweight UI building blocks
 │   ├── lib/                   # Core utilities (auth, env, db, api-error)
 │   ├── modules/               # Feature modules (auth, user, project, task, demo)
 │   ├── services/              # Shared service helpers (api client)
