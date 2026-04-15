@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { DemoBanner } from "@/components/common/demo-banner";
 import { getSessionUser } from "@/lib/auth";
+import { demoProjects, demoTasks, demoUsers } from "@/modules/demo/sample-data";
 
 export default async function DashboardPage() {
   const session = await getSessionUser();
@@ -20,6 +21,13 @@ export default async function DashboardPage() {
         <p>Welcome, {session.name}.</p>
         <p className="muted">Email: {session.email}</p>
         <p className="muted">Role: {session.role}</p>
+      </div>
+
+      <div className="card">
+        <h2>Sample Data Snapshot</h2>
+        <p className="muted">
+          Demo mode includes {demoUsers.length} users, {demoProjects.length} projects, and {demoTasks.length} tasks.
+        </p>
       </div>
 
       <div className="row">

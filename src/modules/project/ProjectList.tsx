@@ -2,15 +2,11 @@
 
 import { FormEvent, useState } from "react";
 
+import { demoProjects } from "@/modules/demo/sample-data";
 import type { Project } from "@/modules/project/types";
 
-const initialProjects: Project[] = [
-  { id: "p1", name: "Starter Website", owner: "Admin User", status: "active" },
-  { id: "p2", name: "Landing Refresh", owner: "Regular User", status: "planning" }
-];
-
 export function ProjectList() {
-  const [projects, setProjects] = useState<Project[]>(initialProjects);
+  const [projects, setProjects] = useState<Project[]>(demoProjects);
   const [name, setName] = useState("");
   const [owner, setOwner] = useState("Admin User");
 

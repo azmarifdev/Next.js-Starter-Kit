@@ -2,12 +2,7 @@
 
 import { useMemo } from "react";
 
-import type { AppUser } from "@/modules/user/types";
-
-const demoUsers: AppUser[] = [
-  { id: "u_admin", name: "Admin User", email: "admin@example.com", role: "admin" },
-  { id: "u_user", name: "Regular User", email: "user@example.com", role: "user" }
-];
+import { demoUsers } from "@/modules/demo/sample-data";
 
 export function UserList() {
   const users = useMemo(() => demoUsers, []);

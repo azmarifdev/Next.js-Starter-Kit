@@ -2,27 +2,11 @@
 
 import { useState } from "react";
 
+import { demoTasks } from "@/modules/demo/sample-data";
 import type { Task } from "@/modules/task/types";
 
-const initialTasks: Task[] = [
-  {
-    id: "t1",
-    title: "Set up authentication",
-    assignee: "Admin User",
-    priority: "high",
-    status: "done"
-  },
-  {
-    id: "t2",
-    title: "Polish landing page",
-    assignee: "Regular User",
-    priority: "medium",
-    status: "in-progress"
-  }
-];
-
 export function TaskList() {
-  const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  const [tasks, setTasks] = useState<Task[]>(demoTasks);
 
   function onStatusChange(id: string, status: Task["status"]) {
     setTasks((current) =>
