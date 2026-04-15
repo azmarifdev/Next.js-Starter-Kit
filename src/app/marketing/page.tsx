@@ -13,7 +13,7 @@ export default function MarketingPage() {
 
       <div className="hero-card stack">
         <div className="row between">
-          <Image src="/assets/logo.png" alt="Template Logo" width={64} height={64} />
+          <Image src="/assets/logo.png" alt="Next.js Starter-Kit logo" width={64} height={64} />
           <span className="muted">{marketing.projectName}</span>
         </div>
 
@@ -22,7 +22,7 @@ export default function MarketingPage() {
 
         <Image
           src="/assets/banner.png"
-          alt="Next.js Starter Kit banner"
+          alt="Next.js Starter-Kit banner"
           width={1200}
           height={450}
           className="hero-image"
@@ -46,6 +46,14 @@ export default function MarketingPage() {
             <li key={feature}>{feature}</li>
           ))}
         </ul>
+      </div>
+
+      <div className="card">
+        <h3>About</h3>
+        <p className="muted">
+          Next.js Starter-Kit is crafted by A. Z. M. Arif to provide clean architecture with beginner-friendly,
+          production-like defaults.
+        </p>
       </div>
     </section>
   );

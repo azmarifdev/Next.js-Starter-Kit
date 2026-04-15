@@ -13,7 +13,7 @@ import { env } from "@/lib/env";
 
 export const metadata: Metadata = {
   title: env.appName,
-  description: "Complete, developer-friendly Next.js Starter Kit"
+  description: "A clean, developer-focused and scalable Next.js Starter-Kit by A. Z. M. Arif"
 };
 
 const themeInitScript = `
@@ -29,7 +29,7 @@ const themeInitScript = `
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const session = await getSessionUser();
-  const githubUrl = "https://github.com/your-username/nextjs-starter-kit";
+  const githubRepoUrl = "https://github.com/azmarifdev/Next.js-Starter-Kit";
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -48,7 +48,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
                 className="flex items-center gap-2.5 font-semibold no-underline"
                 style={{ color: "var(--text)" }}
               >
-                <Image src="/assets/nextjs-mark.svg" alt="Next.js logo" width={28} height={28} />
+                <Image src="/assets/nextjs-mark.svg" alt="azmarifdev logo" width={28} height={28} />
                 <span className="hidden text-sm tracking-tight sm:inline">{env.appName}</span>
               </Link>
 
@@ -56,37 +56,15 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
                 className="hidden items-center gap-5 rounded-full border px-4 py-2 text-sm lg:flex"
                 style={{ borderColor: "var(--border)", background: "var(--header-pill)", color: "var(--header-link)" }}
               >
-                {session ? (
-                  <>
-                    <Link className="transition no-underline hover:opacity-90" href="/dashboard">
-                      Dashboard
-                    </Link>
-                    <Link className="transition no-underline hover:opacity-90" href="/projects">
-                      Projects
-                    </Link>
-                    <Link className="transition no-underline hover:opacity-90" href="/tasks">
-                      Tasks
-                    </Link>
-                    <Link className="transition no-underline hover:opacity-90" href="/users">
-                      Users
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    <Link className="transition no-underline hover:opacity-90" href="/#features">
-                      Features
-                    </Link>
-                    <Link className="transition no-underline hover:opacity-90" href="/#demo">
-                      Demo
-                    </Link>
-                    <Link className="transition no-underline hover:opacity-90" href="/#docs">
-                      Docs
-                    </Link>
-                  </>
-                )}
-                <a className="transition no-underline hover:opacity-90" href={githubUrl} target="_blank" rel="noreferrer">
+                <Link className="transition no-underline hover:opacity-90" href="/#features">
+                  Features
+                </Link>
+                <a className="transition no-underline hover:opacity-90" href={githubRepoUrl} target="_blank" rel="noreferrer">
                   GitHub
                 </a>
+                <Link className="transition no-underline hover:opacity-90" href="/marketing">
+                  Docs
+                </Link>
               </nav>
 
               <div className="flex items-center gap-2">

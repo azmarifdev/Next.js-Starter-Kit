@@ -1,39 +1,42 @@
 @import "tailwindcss";
 
 :root {
+  /* Design System */
+  --primary: #0ea5e9;
+  --secondary: #22d3ee;
   --bg: #f8fbff;
   --surface: #ffffff;
-  --surface-soft: #f6f8fc;
+  --surface-soft: #f4f8fc;
   --text: #0f172a;
   --muted: #475569;
   --border: #d8e1ef;
-  --header-bg: rgba(255, 255, 255, 0.86);
-  --header-pill: rgba(241, 245, 249, 0.88);
+  --header-bg: rgba(255, 255, 255, 0.88);
+  --header-pill: rgba(241, 245, 249, 0.9);
   --header-link: #334155;
   --header-link-hover: #0f172a;
   --ring: rgba(15, 23, 42, 0.06);
-  --hero-glow: rgba(56, 189, 248, 0.12);
-  --hero-glow-secondary: rgba(99, 102, 241, 0.08);
+  --hero-glow: rgba(14, 165, 233, 0.12);
+  --hero-glow-secondary: rgba(34, 211, 238, 0.08);
   --card-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
-  --primary: #22d3ee;
-  --primary-soft: #162338;
   --danger: #ef4444;
 }
 
 :root[data-theme="dark"] {
+  --primary: #38bdf8;
+  --secondary: #67e8f9;
   --bg: #020617;
   --surface: #0f172a;
   --surface-soft: #111c31;
   --text: #e2e8f0;
   --muted: #94a3b8;
   --border: #1e293b;
-  --header-bg: rgba(2, 6, 23, 0.9);
+  --header-bg: rgba(2, 6, 23, 0.92);
   --header-pill: rgba(255, 255, 255, 0.05);
   --header-link: #cbd5e1;
   --header-link-hover: #ffffff;
   --ring: rgba(148, 163, 184, 0.15);
-  --hero-glow: rgba(34, 211, 238, 0.16);
-  --hero-glow-secondary: rgba(14, 165, 233, 0.12);
+  --hero-glow: rgba(56, 189, 248, 0.16);
+  --hero-glow-secondary: rgba(103, 232, 249, 0.11);
   --card-shadow: 0 10px 24px rgba(2, 6, 23, 0.28);
 }
 
@@ -78,20 +81,6 @@ a:hover {
   padding: 28px 16px;
 }
 
-.header {
-  background: color-mix(in srgb, #ffffff 88%, #e9efff 12%);
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  backdrop-filter: blur(8px);
-  z-index: 10;
-}
-
-.brand {
-  font-weight: 700;
-  color: #0b1220;
-}
-
 .row {
   display: flex;
   gap: 10px;
@@ -101,11 +90,6 @@ a:hover {
 
 .between {
   justify-content: space-between;
-}
-
-.nav a {
-  color: #475569;
-  font-size: 14px;
 }
 
 .stack {
@@ -155,7 +139,7 @@ a:hover {
   width: 100%;
   height: auto;
   border-radius: 12px;
-  border: 1px solid #334155;
+  border: 1px solid var(--border);
 }
 
 .form {
@@ -180,12 +164,12 @@ a:hover {
 .btn {
   border: none;
   border-radius: 9px;
-  background: linear-gradient(135deg, #22d3ee, #06b6d4);
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
   color: #022c3a;
   padding: 10px 14px;
   cursor: pointer;
   font-weight: 700;
-  box-shadow: 0 6px 16px rgba(6, 182, 212, 0.22);
+  box-shadow: 0 6px 16px rgba(14, 165, 233, 0.22);
   transition: transform 0.15s ease, filter 0.15s ease;
 }
 
@@ -202,7 +186,7 @@ a:hover {
 }
 
 .btn.danger {
-  background: #ef4444;
+  background: var(--danger);
   color: #fff;
   box-shadow: 0 6px 16px rgba(239, 68, 68, 0.22);
 }
@@ -224,7 +208,7 @@ a:hover {
 }
 
 .demo-banner {
-  background: linear-gradient(120deg, rgba(34, 211, 238, 0.16), rgba(34, 211, 238, 0.06));
+  background: linear-gradient(120deg, rgba(14, 165, 233, 0.16), rgba(34, 211, 238, 0.06));
   border: 1px solid color-mix(in srgb, var(--primary) 45%, var(--border) 55%);
   border-radius: 12px;
   padding: 10px 12px;

@@ -3,7 +3,7 @@ export function DeveloperExperienceSection() {
     "5-minute onboarding with setup + seed commands.",
     "Opinionated defaults without unnecessary complexity.",
     "Clear module boundaries for fast team collaboration.",
-    "Demo-friendly UI you can show to clients immediately."
+    "Naming aligned for future kits: azmarifdev-starter, azmarifdev-advanced, azmarifdev-saas."
   ];
 
   return (
@@ -13,10 +13,10 @@ export function DeveloperExperienceSection() {
         style={{ borderColor: "var(--border)", background: "var(--surface)", boxShadow: "0 8px 24px var(--ring)" }}
       >
         <div>
-          <h2 className="text-3xl font-semibold sm:text-4xl">Built to impress, easy to maintain</h2>
+          <h2 className="text-3xl font-semibold sm:text-4xl">Built for developers, branded for growth</h2>
           <p className="mt-3 max-w-2xl" style={{ color: "var(--muted)" }}>
-            This Starter Kit gives you production-like behavior with beginner-friendly clarity, so you can build fast
-            and still keep the codebase clean.
+            This starter kit reflects A. Z. M. Arif's engineering style: clean architecture, practical defaults, and
+            documentation-first developer experience.
           </p>
         </div>
 

@@ -47,9 +47,9 @@ export function FeaturesSection() {
     <section id="features" className="px-4 py-14 sm:px-6">
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto mb-10 max-w-2xl text-center">
-          <h2 className="text-3xl font-semibold sm:text-4xl">What makes this Starter Kit complete</h2>
+          <h2 className="text-3xl font-semibold sm:text-4xl">Minimal by design, complete in workflow</h2>
           <p className="mt-3" style={{ color: "var(--muted)" }}>
-            Everything you need to go from setup to shipping without getting stuck in boilerplate.
+            The essentials you need for real projects, without enterprise complexity.
           </p>
         </div>
 

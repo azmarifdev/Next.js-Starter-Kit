@@ -1,16 +1,16 @@
 {
   "marketing": {
-    "projectName": "Next.js Starter Kit",
-    "title": "Ship Faster With A Complete Next.js Starter Kit",
-    "subtitle": "Built for clarity, demo-ready out of the box, and simple enough for beginners to understand in minutes.",
-    "ctaPrimary": "Go To Login",
-    "ctaSecondary": "Go To Dashboard",
-    "featuresTitle": "Starter Kit Features",
+    "projectName": "Next.js Starter-Kit",
+    "title": "A clean Next.js starter kit for modern developer products",
+    "subtitle": "Built with practical defaults for auth, routing, API handling, and polished UI states so you can ship faster.",
+    "ctaPrimary": "Start with Demo",
+    "ctaSecondary": "Open Dashboard",
+    "featuresTitle": "Core Starter Features",
     "features": [
       "Clean App Router structure",
       "Auth API ready: login, register, logout, me",
-      "Demo banner with default credentials",
-      "Optional MongoDB support for auth users"
+      "Route protection with middleware",
+      "Optional MongoDB support for persistent auth users"
     ]
   }
 }

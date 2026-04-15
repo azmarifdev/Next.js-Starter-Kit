@@ -10,16 +10,16 @@ export function HeroSection() {
           className="mb-4 rounded-full border px-4 py-1 text-xs font-medium uppercase tracking-[0.12em]"
           style={{ borderColor: "var(--border)", background: "var(--surface-soft)", color: "var(--muted)" }}
         >
-          Production-ready Next.js starter kit
+          Next.js Starter-Kit
         </p>
 
         <h1 className="max-w-4xl text-balance text-4xl font-bold leading-tight sm:text-5xl md:text-6xl">
-          Launch your product faster with a clean, complete Starter Kit
+          Next.js Starter-Kit
         </h1>
 
         <p className="mt-5 max-w-2xl text-base sm:text-lg" style={{ color: "var(--muted)" }}>
-          Built for real-world delivery with auth, guarded routes, API-ready structure, polished UI states, and clear
-          developer experience out of the box.
+          A clean, developer-focused and scalable Next.js starter with practical defaults for authentication, API routes,
+          UI states, and maintainable architecture.
         </p>
 
         <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
@@ -27,7 +27,7 @@ export function HeroSection() {
             Get Started
           </Link>
           <a
-            href="https://github.com/your-username/nextjs-starter-kit"
+            href="https://github.com/azmarifdev/Next.js-Starter-Kit"
             target="_blank"
             rel="noreferrer"
             className="btn secondary rounded-xl px-5 py-3 text-sm font-semibold no-underline"

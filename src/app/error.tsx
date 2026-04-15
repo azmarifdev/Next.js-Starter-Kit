@@ -1,15 +1,18 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+
 export default function Error({ reset }: { error: Error; reset: () => void }) {
   return (
     <section className="content-shell">
-      <div className="card stack">
+      <Card className="stack">
         <h1>Something went wrong</h1>
         <p className="muted">We could not load this page. Please try again.</p>
-        <button type="button" className="btn" onClick={reset}>
+        <Button type="button" onClick={reset}>
           Try again
-        </button>
-      </div>
+        </Button>
+      </Card>
     </section>
   );
 }
