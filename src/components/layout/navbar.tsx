@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { LogoutButton } from "@/components/shared/logout-button";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
@@ -10,16 +13,23 @@ type NavbarProps = {
   session: SessionUser | null;
 };
 
-const navLinks = [
-  { href: "/dashboard", label: "Dashboard", protected: true },
-  { href: "/projects", label: "Projects", protected: true },
-  { href: "/tasks", label: "Tasks", protected: true },
-  { href: "/users", label: "Users", protected: true },
-  { href: "/marketing", label: "Docs", protected: false }
+const privateNavLinks = [
+  { href: "/dashboard", label: "Dashboard" },
+  { href: "/projects", label: "Projects" },
+  { href: "/tasks", label: "Tasks" },
+  { href: "/users", label: "Users" }
 ] as const;
 
+function isActiveLink(pathname: string, href: string): boolean {
+  if (href === "/") {
+    return pathname === "/";
+  }
+
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function Navbar({ session }: NavbarProps) {
-  const visibleLinks = navLinks.filter((link) => (link.protected ? Boolean(session) : true));
+  const pathname = usePathname();
 
   return (
     <header
@@ -27,30 +37,45 @@ export function Navbar({ session }: NavbarProps) {
       style={{ borderColor: "var(--border)", background: "var(--header-bg)" }}
     >
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
-        <Link href="/" className="flex items-center gap-2.5 font-semibold no-underline" style={{ color: "var(--text)" }}>
-          <Image src="/assets/nextjs-mark.svg" alt="Next.js Starter-Kit logo" width={28} height={28} />
-          <span className="hidden text-sm tracking-tight sm:inline">{env.appName}</span>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2.5 font-semibold no-underline" style={{ color: "var(--text)" }}>
+            <Image src="/assets/nextjs-mark.svg" alt="Next.js Starter-Kit logo" width={28} height={28} />
+            <span className="hidden text-sm tracking-tight sm:inline">{env.appName}</span>
+          </Link>
+          <Link
+            href="/"
+            className={`nav-link ${isActiveLink(pathname, "/") ? "active" : ""}`.trim()}
+            aria-current={isActiveLink(pathname, "/") ? "page" : undefined}
+          >
+            Home
+          </Link>
+        </div>
 
-        <nav
-          className="hidden items-center gap-5 rounded-full border px-4 py-2 text-sm lg:flex"
-          style={{ borderColor: "var(--border)", background: "var(--header-pill)", color: "var(--header-link)" }}
-        >
-          {visibleLinks.map((link) => (
-            <Link key={link.href} className="transition no-underline hover:opacity-90" href={link.href}>
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+        {session ? (
+          <nav className="nav-group hidden md:flex" aria-label="Main navigation">
+            {privateNavLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`nav-link ${isActiveLink(pathname, link.href) ? "active" : ""}`.trim()}
+                aria-current={isActiveLink(pathname, link.href) ? "page" : undefined}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        ) : (
+          <div />
+        )}
 
         <div className="flex items-center gap-2">
-          <ThemeToggle />
           {session ? (
             <>
-              <span className="hidden rounded-full border px-3 py-1 text-xs font-medium sm:inline-flex" style={{ borderColor: "var(--border)", background: "var(--header-pill)", color: "var(--muted)" }}>
-                {session.email}
-              </span>
-              <Link href="/dashboard" className="btn secondary px-3.5 py-2 text-sm font-semibold no-underline">
+              <ThemeToggle />
+              <Link
+                href="/dashboard"
+                className={`btn secondary px-3 py-2 text-sm font-semibold no-underline ${isActiveLink(pathname, "/dashboard") ? "ring-1" : ""}`.trim()}
+              >
                 Dashboard
               </Link>
               <LogoutButton />
@@ -67,6 +92,21 @@ export function Navbar({ session }: NavbarProps) {
           )}
         </div>
       </div>
+
+      {session ? (
+        <nav className="nav-group-mobile md:hidden" aria-label="Mobile navigation">
+          {privateNavLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`nav-link ${isActiveLink(pathname, link.href) ? "active" : ""}`.trim()}
+              aria-current={isActiveLink(pathname, link.href) ? "page" : undefined}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+      ) : null}
     </header>
   );
 }

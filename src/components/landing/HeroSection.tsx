@@ -1,6 +1,10 @@
 import Link from "next/link";
 
-export function HeroSection() {
+type HeroSectionProps = {
+  isLoggedIn: boolean;
+};
+
+export function HeroSection({ isLoggedIn }: HeroSectionProps) {
   return (
     <section className="relative overflow-hidden px-4 pb-16 pt-20 sm:px-6 sm:pt-24">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,var(--hero-glow),_transparent_55%)]" />
@@ -14,26 +18,33 @@ export function HeroSection() {
         </p>
 
         <h1 className="max-w-4xl text-balance text-4xl font-bold leading-tight sm:text-5xl md:text-6xl">
-          Next.js Starter-Kit
+          Clean, Minimal, Production-Ready Next.js Starter
         </h1>
 
         <p className="mt-5 max-w-2xl text-base sm:text-lg" style={{ color: "var(--muted)" }}>
-          A clean, developer-focused and scalable Next.js starter with practical defaults for authentication, API routes,
-          UI states, and maintainable architecture.
+          Build real products with practical defaults: authentication, API routes, route guards, and polished UX out of
+          the box.
         </p>
 
         <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
           <Link href="/register" className="btn rounded-xl px-5 py-3 text-sm font-semibold text-black no-underline">
             Get Started
           </Link>
-          <a
-            href="https://github.com/azmarifdev/Next.js-Starter-Kit"
-            target="_blank"
-            rel="noreferrer"
-            className="btn secondary rounded-xl px-5 py-3 text-sm font-semibold no-underline"
-          >
-            View GitHub
-          </a>
+          {isLoggedIn ? (
+            <Link href="/dashboard" className="btn secondary rounded-xl px-5 py-3 text-sm font-semibold no-underline">
+              Go to Dashboard
+            </Link>
+          ) : (
+            <Link href="/login" className="btn secondary rounded-xl px-5 py-3 text-sm font-semibold no-underline">
+              Login to Demo
+            </Link>
+          )}
+        </div>
+
+        <div className="mt-6 w-full max-w-xl rounded-xl border px-4 py-3 text-sm" style={{ borderColor: "var(--border)", background: "var(--surface)", color: "var(--text)" }}>
+          <p className="font-semibold">Demo credentials</p>
+          <p className="mt-1 muted">Admin: admin@example.com / admin123</p>
+          <p className="muted">User: user@example.com / user123</p>
         </div>
       </div>
     </section>
