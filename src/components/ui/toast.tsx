@@ -2,10 +2,12 @@
 
 import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from "react";
 
-import { ToastMessage, Toaster, ToastType } from "@/components/ui/toaster";
+import type { ToastMessage, ToastType } from "@/components/ui/toaster";
 
 type ToastContextValue = {
+  toasts: ToastMessage[];
   showToast: (message: string, type?: ToastType) => void;
+  dismissToast: (id: string) => void;
 };
 
 const ToastContext = createContext<ToastContextValue | null>(null);
@@ -13,7 +15,7 @@ const ToastContext = createContext<ToastContextValue | null>(null);
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
-  const removeToast = useCallback((id: string) => {
+  const dismissToast = useCallback((id: string) => {
     setToasts((current) => current.filter((toast) => toast.id !== id));
   }, []);
 
@@ -21,19 +23,17 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     (message: string, type: ToastType = "info") => {
       const id = crypto.randomUUID();
       setToasts((current) => [...current, { id, type, title: message }]);
-      setTimeout(() => removeToast(id), 3200);
+      setTimeout(() => dismissToast(id), 3200);
     },
-    [removeToast]
+    [dismissToast]
   );
 
-  const value = useMemo(() => ({ showToast }), [showToast]);
-
-  return (
-    <ToastContext.Provider value={value}>
-      {children}
-      <Toaster toasts={toasts} onDismiss={removeToast} />
-    </ToastContext.Provider>
+  const value = useMemo(
+    () => ({ toasts, showToast, dismissToast }),
+    [dismissToast, showToast, toasts]
   );
+
+  return <ToastContext.Provider value={value}>{children}</ToastContext.Provider>;
 }
 
 export function useToast() {

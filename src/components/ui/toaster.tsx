@@ -1,5 +1,7 @@
 "use client";
 
+import { useToast } from "@/components/ui/toast";
+
 export type ToastType = "success" | "error" | "info";
 
 export type ToastMessage = {
@@ -8,20 +10,16 @@ export type ToastMessage = {
   title: string;
 };
 
-export function Toaster({
-  toasts,
-  onDismiss
-}: {
-  toasts: ToastMessage[];
-  onDismiss: (id: string) => void;
-}) {
+export function Toaster() {
+  const { toasts, dismissToast } = useToast();
+
   return (
     <div className="fixed bottom-4 right-4 z-[70] grid gap-2">
       {toasts.map((toast) => (
         <button
           key={toast.id}
           type="button"
-          onClick={() => onDismiss(toast.id)}
+          onClick={() => dismissToast(toast.id)}
           className="min-w-[240px] rounded-xl border px-3 py-2 text-left text-sm shadow-md transition"
           style={{
             borderColor:
