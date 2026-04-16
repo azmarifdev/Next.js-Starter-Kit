@@ -1,56 +1,19 @@
-import Image from "next/image";
-
 export function DemoPreviewSection() {
   return (
     <section id="demo" className="px-4 py-14 sm:px-6">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-8">
-          <h2 className="text-3xl font-semibold sm:text-4xl">Demo-ready from day one</h2>
-          <p className="mt-3 max-w-2xl" style={{ color: "var(--muted)" }}>
-            Includes practical dashboard screens and demo credentials so anyone can experience the product flow in
-            minutes.
+      <div className="mx-auto max-w-4xl">
+        <article className="rounded-2xl border p-6 sm:p-7" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
+          <h2 className="text-2xl font-semibold sm:text-3xl">Try the demo in under a minute</h2>
+          <p className="mt-3 text-sm sm:text-base" style={{ color: "var(--muted)" }}>
+            Use a pre-seeded account to quickly explore the product flow from login to dashboard, projects, tasks, and users.
           </p>
-        </div>
 
-        <div className="grid gap-5 lg:grid-cols-2">
-          <article
-            className="overflow-hidden rounded-2xl border"
-            style={{ borderColor: "var(--border)", background: "var(--surface)" }}
-          >
-            <div
-              className="border-b px-4 py-3 text-sm font-medium"
-              style={{ borderColor: "var(--border)", color: "var(--muted)" }}
-            >
-              Dashboard
-            </div>
-            <Image
-              src="/assets/dashboard-screenshot.png"
-              alt="Dashboard screenshot"
-              width={1400}
-              height={800}
-              className="h-auto w-full"
-            />
-          </article>
-
-          <article
-            className="overflow-hidden rounded-2xl border"
-            style={{ borderColor: "var(--border)", background: "var(--surface)" }}
-          >
-            <div
-              className="border-b px-4 py-3 text-sm font-medium"
-              style={{ borderColor: "var(--border)", color: "var(--muted)" }}
-            >
-              Login
-            </div>
-            <Image
-              src="/assets/login-screenshot.png"
-              alt="Login screenshot"
-              width={1400}
-              height={800}
-              className="h-auto w-full"
-            />
-          </article>
-        </div>
+          <div className="mt-5 rounded-xl border p-4 text-sm" style={{ borderColor: "var(--border)", background: "var(--surface-soft)" }}>
+            <p className="font-semibold">Demo credentials</p>
+            <p className="mt-1 muted">Admin: admin@example.com / admin123</p>
+            <p className="muted">User: user@example.com / user123</p>
+          </div>
+        </article>
       </div>
     </section>
   );

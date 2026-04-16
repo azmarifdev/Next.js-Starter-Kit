@@ -15,5 +15,6 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
+  // Public routes remain accessible because matcher only targets private paths.
   matcher: ["/dashboard/:path*", "/projects/:path*", "/tasks/:path*", "/users/:path*"]
 };

@@ -295,6 +295,44 @@ a:hover {
   border-color: color-mix(in srgb, var(--primary) 45%, var(--border) 55%);
 }
 
+.nav-group {
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  background: var(--header-pill);
+  border-radius: 999px;
+  padding: 4px;
+}
+
+.nav-group-mobile {
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 8px 16px 10px;
+}
+
+.nav-link {
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--header-link);
+  transition: background-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+  color: var(--header-link-hover);
+}
+
+.nav-link.active {
+  background: color-mix(in srgb, var(--primary) 16%, var(--surface) 84%);
+  color: var(--header-link-hover);
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);

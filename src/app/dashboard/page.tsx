@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { DemoBanner } from "@/components/shared/demo-banner";
@@ -47,18 +46,6 @@ export default async function DashboardPage() {
         <p className="muted">
           Demo mode includes {demoUsers.length} users, {demoProjects.length} projects, and {demoTasks.length} tasks.
         </p>
-      </div>
-
-      <div className="row">
-        <Link className="btn secondary" href="/users">
-          Users
-        </Link>
-        <Link className="btn secondary" href="/projects">
-          Projects
-        </Link>
-        <Link className="btn secondary" href="/tasks">
-          Tasks
-        </Link>
       </div>
     </section>
   );
