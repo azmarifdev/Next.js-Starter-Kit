@@ -10,8 +10,16 @@ import { getSessionUser } from "@/lib/auth";
 import { env } from "@/lib/env";
 
 export const metadata: Metadata = {
-  title: env.appName,
-  description: "A clean, minimal and production-like Next.js starter kit"
+  title: {
+    default: env.appName,
+    template: `%s | ${env.appName}`
+  },
+  description: "A clean, minimal and production-like Next.js starter kit",
+  openGraph: {
+    title: env.appName,
+    description: "A clean, minimal and production-like Next.js starter kit",
+    images: ["/assets/banner.png"]
+  }
 };
 
 const themeInitScript = `
