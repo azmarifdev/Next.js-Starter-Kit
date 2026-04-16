@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { ReactNode } from "react";
 
 import { Navbar } from "@/components/layout/navbar";
+import { Toaster } from "@/components/ui/toaster";
 import { ToastProvider } from "@/components/ui/toast";
 import { getSessionUser } from "@/lib/auth";
 import { env } from "@/lib/env";
@@ -36,6 +37,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <ToastProvider>
           <Navbar session={session} />
           <main className="w-full">{children}</main>
+          <Toaster />
         </ToastProvider>
       </body>
     </html>

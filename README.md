@@ -1,5 +1,7 @@
 # Next.js Starter-Kit
 
+Tagline: Build production-like Next.js apps fast, with clean defaults and zero boilerplate stress.
+
 A clean, minimal, and production-like Next.js starter kit with authentication, protected routes, modular features, and polished default UI.
 
 ![Starter Banner](public/assets/banner.png)
@@ -30,6 +32,7 @@ Open http://localhost:3000
 
 - Admin: `admin@example.com` / `admin123`
 - User: `user@example.com` / `user123`
+- In-app demo banner explains where to explore after login.
 
 ## Features
 
@@ -75,3 +78,9 @@ src/
 - This starter kit runs in mock/demo mode by default.
 - No real database is required to get started.
 - `pnpm seed` is optional and currently a no-op helper.
+
+## Developer Info
+
+- Name: A. Z. M. Arif
+- GitHub: https://github.com/azmarifdev
+- Website: https://azmarif.dev

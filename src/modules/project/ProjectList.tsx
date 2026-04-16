@@ -6,6 +6,7 @@ import { useToast } from "@/components/ui/toast";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { EmptyState } from "@/components/shared/empty-state";
 import { demoProjects } from "@/modules/demo/sample-data";
 import { createProject, filterProjects, getProjectStats } from "@/modules/project/service";
 import type { Project } from "@/modules/project/types";
@@ -93,15 +94,16 @@ export function ProjectList() {
       </div>
 
       {filteredProjects.length === 0 ? (
-        <div className="list-row stack" style={{ textAlign: "center" }}>
-          <strong>No data yet</strong>
-          <p className="muted">Create your first project or clear filters.</p>
-          {hasFilters ? (
-            <Button type="button" variant="secondary" onClick={() => { setQuery(""); setStatusFilter("all"); }}>
-              Clear filters
-            </Button>
-          ) : null}
-        </div>
+        <EmptyState
+          description="Create your first project or clear filters."
+          action={
+            hasFilters ? (
+              <Button type="button" variant="secondary" onClick={() => { setQuery(""); setStatusFilter("all"); }}>
+                Clear filters
+              </Button>
+            ) : null
+          }
+        />
       ) : (
         <ul className="list">
           {filteredProjects.map((project) => (

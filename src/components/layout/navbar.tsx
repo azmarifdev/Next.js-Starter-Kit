@@ -50,6 +50,9 @@ export function Navbar({ session }: NavbarProps) {
               <span className="hidden rounded-full border px-3 py-1 text-xs font-medium sm:inline-flex" style={{ borderColor: "var(--border)", background: "var(--header-pill)", color: "var(--muted)" }}>
                 {session.email}
               </span>
+              <Link href="/dashboard" className="btn secondary px-3.5 py-2 text-sm font-semibold no-underline">
+                Dashboard
+              </Link>
               <LogoutButton />
             </>
           ) : (
@@ -58,7 +61,7 @@ export function Navbar({ session }: NavbarProps) {
                 Login
               </Link>
               <Link href="/register" className="btn px-3.5 py-2 text-sm font-semibold text-black no-underline">
-                Get Started
+                Register
               </Link>
             </>
           )}

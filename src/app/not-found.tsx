@@ -7,10 +7,15 @@ export default function NotFound() {
     <section className="content-shell">
       <Card className="stack">
         <h1>Page not found</h1>
-        <p className="muted">The page you are looking for does not exist.</p>
-        <Link href="/" className="btn" style={{ width: "fit-content" }}>
-          Back to home
-        </Link>
+        <p className="muted">The page you requested does not exist or may have been moved.</p>
+        <div className="row">
+          <Link href="/" className="btn" style={{ width: "fit-content" }}>
+            Back to home
+          </Link>
+          <Link href="/dashboard" className="btn secondary" style={{ width: "fit-content" }}>
+            Open dashboard
+          </Link>
+        </div>
       </Card>
     </section>
   );

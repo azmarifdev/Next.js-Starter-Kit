@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 
 import { useToast } from "@/components/ui/toast";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/shared/empty-state";
 import { demoTasks } from "@/modules/demo/sample-data";
 import { filterTasks, getTaskStats, updateTaskStatus } from "@/modules/task/service";
 import type { Task } from "@/modules/task/types";
@@ -64,15 +66,16 @@ export function TaskList() {
       </div>
 
       {filteredTasks.length === 0 ? (
-        <div className="list-row stack" style={{ textAlign: "center" }}>
-          <strong>No data yet</strong>
-          <p className="muted">Create tasks or clear filters to view data.</p>
-          {hasFilters ? (
-            <button type="button" className="btn secondary" onClick={() => { setQuery(""); setStatusFilter("all"); }}>
-              Clear filters
-            </button>
-          ) : null}
-        </div>
+        <EmptyState
+          description="Create tasks or clear filters to view data."
+          action={
+            hasFilters ? (
+              <Button type="button" variant="secondary" onClick={() => { setQuery(""); setStatusFilter("all"); }}>
+                Clear filters
+              </Button>
+            ) : null
+          }
+        />
       ) : (
         <ul className="list">
           {filteredTasks.map((task) => (

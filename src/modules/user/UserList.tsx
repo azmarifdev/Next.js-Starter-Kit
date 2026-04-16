@@ -2,8 +2,10 @@
 
 import { useMemo, useState } from "react";
 
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { EmptyState } from "@/components/shared/empty-state";
 import { demoUsers } from "@/modules/demo/sample-data";
 import { filterUsers, getUserStats } from "@/modules/user/service";
 
@@ -51,15 +53,16 @@ export function UserList() {
       </div>
 
       {filteredUsers.length === 0 ? (
-        <div className="list-row stack" style={{ textAlign: "center" }}>
-          <strong>No data yet</strong>
-          <p className="muted">Try changing your search or role filter.</p>
-          {hasFilters ? (
-            <button type="button" className="btn secondary" onClick={() => { setQuery(""); setRoleFilter("all"); }}>
-              Clear filters
-            </button>
-          ) : null}
-        </div>
+        <EmptyState
+          description="Try changing your search or role filter."
+          action={
+            hasFilters ? (
+              <Button type="button" variant="secondary" onClick={() => { setQuery(""); setRoleFilter("all"); }}>
+                Clear filters
+              </Button>
+            ) : null
+          }
+        />
       ) : (
         <ul className="list">
           {filteredUsers.map((user) => (

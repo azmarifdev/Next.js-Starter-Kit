@@ -4,6 +4,7 @@ export function DemoBanner() {
       <strong>Demo Mode Active</strong>
       <span>Sign in with: admin@example.com / admin123</span>
       <span>Alternative: user@example.com / user123</span>
+      <span className="muted">After login, explore Dashboard, Projects, Tasks, and Users.</span>
     </div>
   );
 }
